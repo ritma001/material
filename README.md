@@ -31,7 +31,7 @@ tba
 | 09.11.2026  | Mark | hands-on session #2: RNA-seq |  FASTQC/Salmon/etc. | X | X |
 | 16.11.2026  | Hubert | single-cell 1: preprocessing, dim. red., clustering | clustering | X | X |
 | 23.11.2026  | Mark | single-cell 2: clustering, marker gene DE | marker gene DE | X | X |
-| 30.11.2026  | Mark | spatial omics 1 | spatial statistics | X | [Utilizing Nanopore direct RNA sequencing of blood from patients with sepsis for discovery of co- and post-transcriptional disease biomarkers] (https://link.springer.com/article/10.1186/s12879-025-11078-z) (GK, WR) |
+| 30.11.2026  | Mark | spatial omics 1 | spatial statistics | X | TBA (GK, WR) |
 | 07.12.2026  | tba | hands-on session #3: single-cell RNA-seq | full scRNA-seq pipeline | X | X |
 | 14.12.2026  | Mark | spatial omics 2 | structures, DSP | X | X |
 
