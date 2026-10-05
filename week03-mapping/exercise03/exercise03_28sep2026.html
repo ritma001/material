@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Hubert Rehrauer">
-<meta name="dcterms.date" content="2026-09-28">
+<meta name="author" content="Wannisa Ritmahan">
+<meta name="dcterms.date" content="2026-10-05">
 
 <title>Exercise 03</title>
 <style>
@@ -2217,6 +2217,8 @@ vertical-align: -.125em;
   <li><a href="#question-1-for-both-runs-with-and-without-trimming-what-fraction-of-the-reads-aligns-uniquely-and-multiple-times" id="toc-question-1-for-both-runs-with-and-without-trimming-what-fraction-of-the-reads-aligns-uniquely-and-multiple-times" class="nav-link" data-scroll-target="#question-1-for-both-runs-with-and-without-trimming-what-fraction-of-the-reads-aligns-uniquely-and-multiple-times">Question 1: For both runs (with and without trimming), what fraction of the reads aligns uniquely and multiple times?</a></li>
   <li><a href="#question-2-are-the-reads-that-align-the-same-in-both-cases" id="toc-question-2-are-the-reads-that-align-the-same-in-both-cases" class="nav-link" data-scroll-target="#question-2-are-the-reads-that-align-the-same-in-both-cases">Question 2: Are the reads that align the same in both cases?</a></li>
   <li><a href="#question-3-for-those-reads-that-align-full-and-trimmed-do-they-align-to-the-same-location" id="toc-question-3-for-those-reads-that-align-full-and-trimmed-do-they-align-to-the-same-location" class="nav-link" data-scroll-target="#question-3-for-those-reads-that-align-full-and-trimmed-do-they-align-to-the-same-location">Question 3: For those reads that align full and trimmed, do they align to the same location?</a></li>
+  <li><a href="#sessioninfo" id="toc-sessioninfo" class="nav-link" data-scroll-target="#sessioninfo"><code>sessionInfo()</code></a></li>
+  <li><a href="#ai-declaration" id="toc-ai-declaration" class="nav-link" data-scroll-target="#ai-declaration">AI declaration</a></li>
   </ul>
 </nav>
 </div>
@@ -2234,14 +2236,14 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Hubert Rehrauer </p>
+             <p>Wannisa Ritmahan </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 28, 2026</p>
+      <p class="date">October 5, 2026</p>
     </div>
   </div>
   
@@ -2268,32 +2270,32 @@ vertical-align: -.125em;
 <span id="cb2-2"><a href="#cb2-2" aria-label="2"></a><span class="fu">library</span>(BSgenome.Scerevisiae.UCSC.sacCer3)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-label="3"></a><span class="fu">library</span>(Rsubread)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-label="4"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a><span class="fu">library</span>(GenomicAlignments)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a><span class="fu">library</span>(GenomicAlignments)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a><span class="fu">library</span>(formattable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Use the commands <em>export</em> to export method in the <em>BSgenome</em> package to write the genome as a fasta file on the local disk. Use the commands <em>buildindex</em> and <em>align</em> of the <em>Rsubread</em> package to map the reads. Consult the help pages of the respective functions. Build the index so that at most 2GB of RAM is used. Run the alignment with 4 threads. If you computer has less resources, adapt accordingly.</p>
 <p>We get the reference sequence from the genome package <em>BSgenome.Scerevisiae.UCSC.sacCer3</em> and we export it as a fasta file.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">export</span>(BSgenome.Scerevisiae.UCSC.sacCer3, <span class="at">con=</span><span class="st">&quot;sacCer3-genome.fasta&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>writing chrI sequence to file ... OK
-writing chrII sequence to file ... OK
-writing chrIII sequence to file ... OK
-writing chrIV sequence to file ... OK
-writing chrV sequence to file ... OK
-writing chrVI sequence to file ... OK
-writing chrVII sequence to file ... OK
-writing chrVIII sequence to file ... OK
-writing chrIX sequence to file ... OK
-writing chrX sequence to file ... OK
-writing chrXI sequence to file ... OK
-writing chrXII sequence to file ... OK
-writing chrXIII sequence to file ... OK
-writing chrXIV sequence to file ... OK
-writing chrXV sequence to file ... OK
-writing chrXVI sequence to file ... OK
-writing chrM sequence to file ... OK</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="co"># Fetch reference genome (fasta) and write on the local disk</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a><span class="fu">export</span>(BSgenome.Scerevisiae.UCSC.sacCer3, <span class="at">con=</span><span class="st">&quot;sacCer3-genome.fasta&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a><span class="co"># Build a base-space index (default)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a><span class="fu">buildindex</span>(<span class="st">&quot;sacCer3-Rsub&quot;</span>, <span class="st">&quot;sacCer3-genome.fasta&quot;</span>, <span class="at">memory=</span><span class="dv">2000</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="fu">buildindex</span>(<span class="st">&quot;sacCer3-Rsub&quot;</span>, <span class="st">&quot;sacCer3-genome.fasta&quot;</span>, <span class="at">memory=</span><span class="dv">2000</span> )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="align" class="level2">
+<h2 class="anchored" data-anchor-id="align">Align</h2>
+<p>Align to the genome with the <em>RSubread::align</em> function that does not explicitely look for spliced alignements. Do the alignment for the full length reads. Then run the alignment also a second time with fixed trimming of 10 bases from both ends, i.e. use <em>align(….., nTrim5 = 10, nTrim3 = 10)</em>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a><span class="co">#  Align full read length; Phred 33 (from fastQC report)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>alignFull.stat <span class="ot">&lt;-</span> <span class="fu">align</span>(<span class="at">index =</span> <span class="st">&quot;sacCer3-Rsub&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>                        <span class="at">readfile1=</span><span class="st">&quot;G1_R1-sub.fastq.gz&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>                        <span class="at">output_file=</span><span class="st">&quot;G1_R1-sub.bam&quot;</span>, </span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>                        <span class="at">type =</span> <span class="st">&quot;rna&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>                        <span class="at">phredOffset =</span> <span class="dv">33</span>, </span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>                        <span class="at">nthreads =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
         ==========     _____ _    _ ____  _____  ______          _____  
@@ -2306,101 +2308,434 @@ writing chrM sequence to file ... OK</code></pre>
 
 //================================= setting ==================================\\
 ||                                                                            ||
-||                Index name : sacCer3-Rsub                                   ||
-||               Index space : base space                                     ||
-||               Index split : no-split                                       ||
-||          Repeat threshold : 100 repeats                                    ||
-||              Gapped index : no                                             ||
+|| Function      : Read alignment (RNA-Seq)                                   ||
+|| Input file    : G1_R1-sub.fastq.gz                                         ||
+|| Output file   : G1_R1-sub.bam (BAM)                                        ||
+|| Index name    : sacCer3-Rsub                                               ||
 ||                                                                            ||
-||       Free / total memory : 7.5GB / 24.0GB                                 ||
+||                    ------------------------------------                    ||
 ||                                                                            ||
-||               Input files : 1 file in total                                ||
-||                             o sacCer3-genome.fasta                         ||
+||                               Threads : 4                                  ||
+||                          Phred offset : 33                                 ||
+||                             Min votes : 3 / 10                             ||
+||                        Max mismatches : 3                                  ||
+||                      Max indel length : 5                                  ||
+||            Report multi-mapping reads : yes                                ||
+|| Max alignments per multi-mapping read : 1                                  ||
 ||                                                                            ||
 \\============================================================================//
 
-//================================= Running ==================================\\
+//================= Running (05-Oct-2026 08:44:37, pid=1355) =================\\
 ||                                                                            ||
-|| Check the integrity of provided reference sequences ...                    ||
-|| No format issues were found                                                ||
-|| Scan uninformative subreads in reference sequences ...                     ||
-|| 11 uninformative subreads were found.                                      ||
-|| These subreads were excluded from index building.                          ||
-|| Estimate the index size...                                                 ||
-||    8%,   0 mins elapsed, rate=12493.4k bps/s                               ||
-||   16%,   0 mins elapsed, rate=14109.1k bps/s                               ||
-||   24%,   0 mins elapsed, rate=14701.8k bps/s                               ||
-||   33%,   0 mins elapsed, rate=15035.8k bps/s                               ||
-||   41%,   0 mins elapsed, rate=15042.4k bps/s                               ||
-||   49%,   0 mins elapsed, rate=15033.8k bps/s                               ||
-||   58%,   0 mins elapsed, rate=14924.2k bps/s                               ||
-||   66%,   0 mins elapsed, rate=15110.0k bps/s                               ||
-||   74%,   0 mins elapsed, rate=15282.7k bps/s                               ||
-||   83%,   0 mins elapsed, rate=15417.6k bps/s                               ||
-||   91%,   0 mins elapsed, rate=15542.0k bps/s                               ||
-|| 3.0 GB of memory is needed for index building.                             ||
-|| Build the index...                                                         ||
-||    8%,   0 mins elapsed, rate=1293.7k bps/s                                ||
-||   16%,   0 mins elapsed, rate=2187.9k bps/s                                ||
-||   24%,   0 mins elapsed, rate=2845.6k bps/s                                ||
-||   33%,   0 mins elapsed, rate=3254.5k bps/s                                ||
-||   41%,   0 mins elapsed, rate=3642.1k bps/s                                ||
-||   49%,   0 mins elapsed, rate=3957.5k bps/s                                ||
-||   58%,   0 mins elapsed, rate=4216.2k bps/s                                ||
-||   66%,   0 mins elapsed, rate=4437.3k bps/s                                ||
-||   74%,   0 mins elapsed, rate=4630.1k bps/s                                ||
-||   83%,   0 mins elapsed, rate=4798.3k bps/s                                ||
-||   91%,   0 mins elapsed, rate=4939.6k bps/s                                ||
-|| Save current index block...                                                ||
-||  [ 0.0% finished ]                                                         ||
-||  [ 10.0% finished ]                                                        ||
-||  [ 20.0% finished ]                                                        ||
-||  [ 30.0% finished ]                                                        ||
-||  [ 40.0% finished ]                                                        ||
-||  [ 50.0% finished ]                                                        ||
-||  [ 60.0% finished ]                                                        ||
-||  [ 70.0% finished ]                                                        ||
-||  [ 80.0% finished ]                                                        ||
-||  [ 90.0% finished ]                                                        ||
-||  [ 100.0% finished ]                                                       ||
+|| Check the input reads.                                                     ||
+|| The input file contains base space reads.                                  ||
+|| Initialise the memory objects.                                             ||
+|| Estimate the mean read length.                                             ||
+|| The range of Phred scores observed in the data is [2,36]                   ||
+|| Create the output BAM file.                                                ||
+|| Check the index.                                                           ||
+|| Init the voting space.                                                     ||
+|| Global environment is initialised.                                         ||
+|| Load the 1-th index block...                                               ||
+|| The index block has been loaded.                                           ||
+|| Start read mapping in chunk.                                               ||
+||    0% completed, 0.1 mins elapsed, rate=394.5k reads per second            ||
+||    7% completed, 0.1 mins elapsed, rate=748.9k reads per second            ||
+||   14% completed, 0.1 mins elapsed, rate=793.0k reads per second            ||
+||   21% completed, 0.2 mins elapsed, rate=816.9k reads per second            ||
+||   28% completed, 0.2 mins elapsed, rate=828.4k reads per second            ||
+||   34% completed, 0.2 mins elapsed, rate=837.4k reads per second            ||
+||   41% completed, 0.2 mins elapsed, rate=837.4k reads per second            ||
+||   48% completed, 0.2 mins elapsed, rate=837.0k reads per second            ||
+||   54% completed, 0.2 mins elapsed, rate=838.3k reads per second            ||
+||   61% completed, 0.2 mins elapsed, rate=834.3k reads per second            ||
+||   69% completed, 0.2 mins elapsed, rate=158.4k reads per second            ||
+||   73% completed, 0.2 mins elapsed, rate=155.9k reads per second            ||
+||   76% completed, 0.2 mins elapsed, rate=154.4k reads per second            ||
+||   79% completed, 0.2 mins elapsed, rate=152.7k reads per second            ||
+||   83% completed, 0.2 mins elapsed, rate=151.3k reads per second            ||
+||   86% completed, 0.3 mins elapsed, rate=150.1k reads per second            ||
+||   89% completed, 0.3 mins elapsed, rate=148.9k reads per second            ||
+||   93% completed, 0.3 mins elapsed, rate=147.7k reads per second            ||
+||   96% completed, 0.3 mins elapsed, rate=146.9k reads per second            ||
 ||                                                                            ||
-||                      Total running time: 0.1 minutes.                      ||
-||                 Index sacCer3-Rsub was successfully built.                 ||
+||                           Completed successfully.                          ||
+||                                                                            ||
+\\====================================    ====================================//
+
+//================================   Summary =================================\\
+||                                                                            ||
+||                 Total reads : 2,667,280                                    ||
+||                      Mapped : 2,408,263 (90.3%)                            ||
+||             Uniquely mapped : 1,929,371                                    ||
+||               Multi-mapping : 478,892                                      ||
+||                                                                            ||
+||                    Unmapped : 259,017                                      ||
+||                                                                            ||
+||                      Indels : 7,987                                        ||
+||                                                                            ||
+||                Running time : 0.3 minutes                                  ||
 ||                                                                            ||
 \\============================================================================//</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a><span class="co"># Align with options to trim 10 nt from both ends of the reads</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a>alignTrim.stat <span class="ot">&lt;-</span> <span class="fu">align</span>(<span class="at">index =</span> <span class="st">&quot;sacCer3-Rsub&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>                        <span class="at">readfile1=</span><span class="st">&quot;G1_R1-sub.fastq.gz&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a>                        <span class="at">output_file=</span><span class="st">&quot;G1_R1-sub_trim10.bam&quot;</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a>                        <span class="at">type =</span> <span class="st">&quot;rna&quot;</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-label="8"></a>                        <span class="at">phredOffset =</span> <span class="dv">33</span>, </span>
+<span id="cb6-9"><a href="#cb6-9" aria-label="9"></a>                        <span class="at">nthreads =</span> <span class="dv">4</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-label="10"></a>                        <span class="at">nTrim5 =</span> <span class="dv">10</span>, </span>
+<span id="cb6-11"><a href="#cb6-11" aria-label="11"></a>                        <span class="at">nTrim3 =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+        ==========     _____ _    _ ____  _____  ______          _____  
+        =====         / ____| |  | |  _ \|  __ \|  ____|   /\   |  __ \ 
+          =====      | (___ | |  | | |_) | |__) | |__     /  \  | |  | |
+            ====      \___ \| |  | |  _ &lt;|  _  /|  __|   / /\ \ | |  | |
+              ====    ____) | |__| | |_) | | \ \| |____ / ____ \| |__| |
+        ==========   |_____/ \____/|____/|_|  \_\______/_/    \_\_____/
+       Rsubread 2.26.0
+
+//================================= setting ==================================\\
+||                                                                            ||
+|| Function      : Read alignment (RNA-Seq)                                   ||
+|| Input file    : G1_R1-sub.fastq.gz                                         ||
+|| Output file   : G1_R1-sub_trim10.bam (BAM)                                 ||
+|| Index name    : sacCer3-Rsub                                               ||
+||                                                                            ||
+||                    ------------------------------------                    ||
+||                                                                            ||
+||                               Threads : 4                                  ||
+||                          Phred offset : 33                                 ||
+||                             Min votes : 3 / 10                             ||
+||                        Max mismatches : 3                                  ||
+||                      Max indel length : 5                                  ||
+||            Report multi-mapping reads : yes                                ||
+|| Max alignments per multi-mapping read : 1                                  ||
+||                                                                            ||
+\\============================================================================//
+
+//================= Running (05-Oct-2026 08:44:56, pid=1355) =================\\
+||                                                                            ||
+|| Check the input reads.                                                     ||
+|| The input file contains base space reads.                                  ||
+|| Initialise the memory objects.                                             ||
+|| Estimate the mean read length.                                             ||
+|| The range of Phred scores observed in the data is [2,36]                   ||
+|| Create the output BAM file.                                                ||
+|| Check the index.                                                           ||
+|| Init the voting space.                                                     ||
+|| Global environment is initialised.                                         ||
+|| Load the 1-th index block...                                               ||
+|| The index block has been loaded.                                           ||
+|| Start read mapping in chunk.                                               ||
+||    0% completed, 0.1 mins elapsed, rate=770.0k reads per second            ||
+||    7% completed, 0.1 mins elapsed, rate=873.2k reads per second            ||
+||   14% completed, 0.1 mins elapsed, rate=882.9k reads per second            ||
+||   21% completed, 0.1 mins elapsed, rate=882.0k reads per second            ||
+||   27% completed, 0.2 mins elapsed, rate=876.6k reads per second            ||
+||   34% completed, 0.2 mins elapsed, rate=872.2k reads per second            ||
+||   41% completed, 0.2 mins elapsed, rate=873.4k reads per second            ||
+||   47% completed, 0.2 mins elapsed, rate=876.0k reads per second            ||
+||   54% completed, 0.2 mins elapsed, rate=878.4k reads per second            ||
+||   61% completed, 0.2 mins elapsed, rate=881.1k reads per second            ||
+||   69% completed, 0.2 mins elapsed, rate=165.7k reads per second            ||
+||   73% completed, 0.2 mins elapsed, rate=164.7k reads per second            ||
+||   76% completed, 0.2 mins elapsed, rate=163.8k reads per second            ||
+||   79% completed, 0.2 mins elapsed, rate=162.8k reads per second            ||
+||   83% completed, 0.2 mins elapsed, rate=162.0k reads per second            ||
+||   86% completed, 0.2 mins elapsed, rate=161.2k reads per second            ||
+||   90% completed, 0.2 mins elapsed, rate=160.5k reads per second            ||
+||   93% completed, 0.3 mins elapsed, rate=159.8k reads per second            ||
+||   96% completed, 0.3 mins elapsed, rate=159.3k reads per second            ||
+||                                                                            ||
+||                           Completed successfully.                          ||
+||                                                                            ||
+\\====================================    ====================================//
+
+//================================   Summary =================================\\
+||                                                                            ||
+||                 Total reads : 2,667,280                                    ||
+||                      Mapped : 2,483,097 (93.1%)                            ||
+||             Uniquely mapped : 1,972,065                                    ||
+||               Multi-mapping : 511,032                                      ||
+||                                                                            ||
+||                    Unmapped : 184,183                                      ||
+||                                                                            ||
+||                      Indels : 8,057                                        ||
+||                                                                            ||
+||                Running time : 0.3 minutes                                  ||
+||                                                                            ||
+\\============================================================================//</code></pre>
 </div>
-</section>
-<section id="align" class="level2">
-<h2 class="anchored" data-anchor-id="align">Align</h2>
-<p>Align to the genome with the <em>RSubread::align</em> function that does not explicitely look for spliced alignements. Do the alignment for the full length reads. Then run the alignment also a second time with fixed trimming of 10 bases from both ends, i.e. use <em>align(….., nTrim5 = 10, nTrim3 = 10)</em>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a><span class="co"># Summary alignment stats</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>align_stats <span class="ot">&lt;-</span> <span class="fu">merge</span>(alignFull.stat, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a>                    alignTrim.stat, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-label="6"></a>                    <span class="at">by =</span> <span class="st">&#39;row.names&#39;</span>, <span class="at">all =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb8-7"><a href="#cb8-7" aria-label="7"></a><span class="fu">colnames</span>(align_stats) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Alignment Stats&quot;</span>, <span class="st">&quot;Default&quot;</span>, <span class="st">&quot;Trimmed&quot;</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-label="8"></a>align_stats[<span class="st">&quot;Difference&quot;</span>] <span class="ot">&lt;-</span> align_stats[<span class="st">&quot;Trimmed&quot;</span>] <span class="sc">-</span> align_stats[<span class="st">&quot;Default&quot;</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-label="9"></a><span class="fu">formattable</span>(align_stats)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-condensed">
+<thead>
+<tr>
+<th style="text-align:right;">
+Alignment Stats
+</th>
+<th style="text-align:right;">
+Default
+</th>
+<th style="text-align:right;">
+Trimmed
+</th>
+<th style="text-align:right;">
+Difference
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+Indels
+</td>
+<td style="text-align:right;">
+7987
+</td>
+<td style="text-align:right;">
+8057
+</td>
+<td style="text-align:right;">
+70
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+Mapped_reads
+</td>
+<td style="text-align:right;">
+2408263
+</td>
+<td style="text-align:right;">
+2483097
+</td>
+<td style="text-align:right;">
+74834
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+Multi_mapping_reads
+</td>
+<td style="text-align:right;">
+478892
+</td>
+<td style="text-align:right;">
+511032
+</td>
+<td style="text-align:right;">
+32140
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+Total_reads
+</td>
+<td style="text-align:right;">
+2667280
+</td>
+<td style="text-align:right;">
+2667280
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+Uniquely_mapped_reads
+</td>
+<td style="text-align:right;">
+1929371
+</td>
+<td style="text-align:right;">
+1972065
+</td>
+<td style="text-align:right;">
+42694
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+Unmapped_reads
+</td>
+<td style="text-align:right;">
+259017
+</td>
+<td style="text-align:right;">
+184183
+</td>
+<td style="text-align:right;">
+-74834
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <section id="question-1-for-both-runs-with-and-without-trimming-what-fraction-of-the-reads-aligns-uniquely-and-multiple-times" class="level2">
 <h2 class="anchored" data-anchor-id="question-1-for-both-runs-with-and-without-trimming-what-fraction-of-the-reads-aligns-uniquely-and-multiple-times">Question 1: For both runs (with and without trimming), what fraction of the reads aligns uniquely and multiple times?</h2>
+<p>From untrimmed alignment, 2,408,263 from total reads of 2,667,280 (90.3%) were mapped to the reference. 80.1% (1929371/2408263) of mapped reads were uniquely mapped while 19.9 % (478892/2408263) mapped to multiple locations.</p>
+<p>Trimming 10 nucleotides from both sides of each read improved the number of mapped reads to 2,483,097 (93.1%). The proportion of unique mapped reads is however decreased to 79.4% (1972065/2483097), inevitably increases multiple mapped reads to 20.6% (511032/2483097).</p>
 </section>
 <section id="question-2-are-the-reads-that-align-the-same-in-both-cases" class="level2">
 <h2 class="anchored" data-anchor-id="question-2-are-the-reads-that-align-the-same-in-both-cases">Question 2: Are the reads that align the same in both cases?</h2>
 <p>Check the agreement of the alignments. Load the uniquely aligning reads. Use the function <em>readGAlignments</em>. Use the parameter settings to read also the read id, and the number of hits (NH)</p>
 <p>Hint:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a>sbp <span class="ot">&lt;-</span> <span class="fu">ScanBamParam</span>(<span class="at">what =</span> <span class="fu">c</span>(<span class="st">&quot;qname&quot;</span>), <span class="at">tag=</span><span class="st">&quot;NH&quot;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a>alignFull <span class="ot">&lt;-</span> <span class="fu">readGAlignments</span>(..., <span class="at">param=</span>sbp)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a>alignTrimmed <span class="ot">&lt;-</span> <span class="fu">readGAlignments</span>(..., <span class="at">param=</span>sbp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a><span class="co"># Define BAM tags (NH = Number of hits) in BAM files</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>sbp <span class="ot">&lt;-</span> <span class="fu">ScanBamParam</span>(<span class="at">what =</span> <span class="fu">c</span>(<span class="st">&quot;qname&quot;</span>), <span class="at">tag=</span><span class="st">&quot;NH&quot;</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-label="6"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-label="7"></a><span class="co"># Scan BAM alignment files with defined search parameters</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-label="8"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-label="9"></a>alignFull <span class="ot">&lt;-</span> <span class="fu">readGAlignments</span>(<span class="st">&#39;G1_R1-sub.bam&#39;</span>, <span class="at">param=</span>sbp)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-label="10"></a>alignTrim <span class="ot">&lt;-</span> <span class="fu">readGAlignments</span>(<span class="st">&#39;G1_R1-sub_trim10.bam&#39;</span>, <span class="at">param=</span>sbp)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-label="11"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-label="12"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-label="13"></a><span class="co"># Find common read ID mapped to the reference</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-label="14"></a><span class="co"># Note: mcols(alignFull) has two columns; qname and NH</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-label="15"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-label="16"></a>mapped_ids <span class="ot">=</span> <span class="fu">intersect</span>(<span class="fu">mcols</span>(alignFull)<span class="sc">$</span>qname, </span>
+<span id="cb9-17"><a href="#cb9-17" aria-label="17"></a>                       <span class="fu">mcols</span>(alignTrim)<span class="sc">$</span>qname)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-label="18"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Common mapped reads: &quot;</span>, <span class="fu">length</span>(mapped_ids)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;Common mapped reads: 2384086&quot;</code></pre>
+</div>
+</div>
+<p>Alternatively, flag <code>scanBamFlag(isUnmappedQuery = FALSE)</code> can be used.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a><span class="co"># Extract only mapped read IDs</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a>sbp_mapped <span class="ot">&lt;-</span> <span class="fu">ScanBamParam</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a>  <span class="at">flag =</span> <span class="fu">scanBamFlag</span>(<span class="at">isUnmappedQuery =</span> <span class="cn">FALSE</span>), <span class="at">what =</span> <span class="st">&quot;qname&quot;</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-label="7"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-label="8"></a><span class="co"># Look up for unmapped reads</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-label="9"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-label="10"></a>alignFull_m <span class="ot">&lt;-</span> <span class="fu">scanBam</span>(<span class="st">&#39;G1_R1-sub.bam&#39;</span>, <span class="at">param =</span> sbp_mapped)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-label="11"></a>alignTrim_m <span class="ot">&lt;-</span> <span class="fu">scanBam</span>(<span class="st">&#39;G1_R1-sub_trim10.bam&#39;</span>, <span class="at">param =</span> sbp_mapped)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-label="12"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-label="13"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-label="14"></a>mapped_ids2 <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">unique</span>(alignTrim_m[[<span class="dv">1</span>]]<span class="sc">$</span>qname), </span>
+<span id="cb11-15"><a href="#cb11-15" aria-label="15"></a>                          <span class="fu">unique</span>(alignFull_m[[<span class="dv">1</span>]]<span class="sc">$</span>qname))</span>
+<span id="cb11-16"><a href="#cb11-16" aria-label="16"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-label="17"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Common mapped reads: &quot;</span>, <span class="fu">length</span>(mapped_ids2)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;Common mapped reads: 2384086&quot;</code></pre>
+</div>
 </div>
 </section>
 <section id="question-3-for-those-reads-that-align-full-and-trimmed-do-they-align-to-the-same-location" class="level2">
 <h2 class="anchored" data-anchor-id="question-3-for-those-reads-that-align-full-and-trimmed-do-they-align-to-the-same-location">Question 3: For those reads that align full and trimmed, do they align to the same location?</h2>
 <p>Hint:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a><span class="do">## aligning to the same location?</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a>common <span class="ot">=</span> <span class="fu">intersect</span>(<span class="fu">mcols</span>(alignFull)<span class="sc">$</span>qname, <span class="fu">mcols</span>(alignTrimmed)<span class="sc">$</span>qname)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>alignFull <span class="ot">&lt;-</span> alignFull[<span class="fu">match</span>(common, <span class="fu">mcols</span>(alignFull)<span class="sc">$</span>qname)]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a>alignTrimmed <span class="ot">&lt;-</span> alignTrimmed[<span class="fu">match</span>(common, <span class="fu">mcols</span>(alignTrimmed)<span class="sc">$</span>qname)]</span>
-<span id="cb8-6"><a href="#cb8-6" aria-label="6"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-label="7"></a>ovlStatus <span class="ot">&lt;-</span> <span class="fu">poverlaps</span>(<span class="fu">granges</span>(alignTrimmed), <span class="fu">granges</span>(alignFull), <span class="at">type=</span><span class="st">&quot;within&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as.vector</span>()</span>
-<span id="cb8-8"><a href="#cb8-8" aria-label="8"></a><span class="fu">mean</span>(ovlStatus)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a><span class="co"># Include only common mapped ids for comparisons</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-label="4"></a>alignFull_mc <span class="ot">&lt;-</span> alignFull[<span class="fu">match</span>(mapped_ids, <span class="fu">mcols</span>(alignFull)<span class="sc">$</span>qname)]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-label="5"></a>alignTrim_mc <span class="ot">&lt;-</span> alignTrim[<span class="fu">match</span>(mapped_ids, <span class="fu">mcols</span>(alignTrim)<span class="sc">$</span>qname)]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-label="6"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-label="7"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-label="8"></a><span class="co"># Finding overlaps of two matching sets element-by-element </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-label="9"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-label="10"></a>ovlStatus <span class="ot">&lt;-</span> <span class="fu">poverlaps</span>(<span class="fu">granges</span>(alignTrim_mc), </span>
+<span id="cb13-11"><a href="#cb13-11" aria-label="11"></a>                       <span class="fu">granges</span>(alignFull_mc), </span>
+<span id="cb13-12"><a href="#cb13-12" aria-label="12"></a>                       <span class="at">type=</span><span class="st">&quot;within&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as.vector</span>()</span>
+<span id="cb13-13"><a href="#cb13-13" aria-label="13"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-label="14"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Common mapped reads that align at the same position: &quot;</span>, <span class="fu">length</span>(ovlStatus), <span class="st">&quot; (&quot;</span>, <span class="fu">round</span>(<span class="fu">mean</span>(ovlStatus)<span class="sc">*</span><span class="dv">100</span>, <span class="at">digits =</span> <span class="dv">2</span>), <span class="st">&quot;%)&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;Common mapped reads that align at the same position: 2384086 (94.77%)&quot;</code></pre>
 </div>
+</div>
+<p>Most of commonly mapped reads between full and trimmed reads aligned at the same locations.</p>
+</section>
+<section id="sessioninfo" class="level2">
+<h2 class="anchored" data-anchor-id="sessioninfo"><code>sessionInfo()</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.6.1 (2026-06-24)
+Platform: aarch64-apple-darwin23
+Running under: macOS Tahoe 26.6.2
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+
+locale:
+[1] en_US.UTF-8
+
+time zone: Europe/Zurich
+tzcode source: internal
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] formattable_0.2.1                      
+ [2] GenomicAlignments_1.48.0               
+ [3] Rsamtools_2.28.0                       
+ [4] SummarizedExperiment_1.42.0            
+ [5] Biobase_2.72.0                         
+ [6] MatrixGenerics_1.24.0                  
+ [7] matrixStats_1.5.0                      
+ [8] dplyr_1.2.1                            
+ [9] Rsubread_2.26.0                        
+[10] BSgenome.Scerevisiae.UCSC.sacCer3_1.4.0
+[11] BSgenome_1.80.0                        
+[12] rtracklayer_1.72.0                     
+[13] BiocIO_1.22.0                          
+[14] Biostrings_2.80.2                      
+[15] XVector_0.52.0                         
+[16] GenomicRanges_1.64.0                   
+[17] Seqinfo_1.2.0                          
+[18] IRanges_2.46.0                         
+[19] S4Vectors_0.50.3                       
+[20] BiocGenerics_0.58.1                    
+[21] generics_0.1.4                         
+
+loaded via a namespace (and not attached):
+ [1] SparseArray_1.12.3  bitops_1.1-0        lattice_0.23-1     
+ [4] magrittr_2.0.5      digest_0.6.39       evaluate_1.0.5     
+ [7] grid_4.6.1          fastmap_1.2.0       jsonlite_2.0.0     
+[10] Matrix_1.7-6        cigarillo_1.2.1     restfulr_0.0.17    
+[13] httr_1.4.9          XML_3.99-0.25       codetools_0.2-20   
+[16] abind_1.4-8         cli_3.6.6           rlang_1.3.0        
+[19] crayon_1.5.3        DelayedArray_0.38.2 yaml_2.3.12        
+[22] otel_0.2.0          S4Arrays_1.12.1     tools_4.6.1        
+[25] parallel_4.6.1      BiocParallel_1.46.0 curl_8.0.0         
+[28] vctrs_0.7.3         R6_2.6.1            lifecycle_1.0.5    
+[31] htmlwidgets_1.6.4   pkgconfig_2.0.3     pillar_1.11.1      
+[34] glue_1.8.1          tidyselect_1.2.1    tibble_3.3.1       
+[37] xfun_0.61           rstudioapi_0.19.0   knitr_1.52         
+[40] rjson_0.2.23        htmltools_0.5.9     rmarkdown_2.32     
+[43] compiler_4.6.1      RCurl_1.98-1.20    </code></pre>
+</div>
+</div>
+</section>
+<section id="ai-declaration" class="level2">
+<h2 class="anchored" data-anchor-id="ai-declaration">AI declaration</h2>
+<p>No AI agents/tools used for creating code or report.</p>
 </section>
 
 </main>

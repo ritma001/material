@@ -1,7 +1,7 @@
 ---
 title: "Exercise 03"
-author: "Hubert Rehrauer"
-date: "28 09 2026"
+author: "Wannisa Ritmahan"
+date: today
 format: 
     html:
       toc: true
@@ -39,14 +39,18 @@ library(BSgenome.Scerevisiae.UCSC.sacCer3)
 library(Rsubread)
 library(dplyr)
 library(GenomicAlignments)
+library(formattable)
 ```
 
 Use the commands *export* to export method in the *BSgenome* package to write the genome as a fasta file on the local disk. Use the commands *buildindex* and *align* of the *Rsubread* package to map the reads. Consult the help pages of the respective functions. Build the index so that at most 2GB of RAM is used. Run the alignment with 4 threads. If you computer has less resources, adapt accordingly.
 
 We get the reference sequence from the genome package *BSgenome.Scerevisiae.UCSC.sacCer3* and we export it as a fasta file.
 
-```{r}
+```{r, eval=FALSE}
+# Fetch reference genome (fasta) and write on the local disk
 export(BSgenome.Scerevisiae.UCSC.sacCer3, con="sacCer3-genome.fasta")
+
+# Build a base-space index (default)
 buildindex("sacCer3-Rsub", "sacCer3-genome.fasta", memory=2000 )
 ```
 
@@ -55,8 +59,47 @@ buildindex("sacCer3-Rsub", "sacCer3-genome.fasta", memory=2000 )
 Align to the genome with the *RSubread::align* function that does not explicitely look for spliced alignements. Do the alignment for the full length reads. 
 Then run the alignment also a second time with fixed trimming of 10 bases from both ends, i.e. use *align(....., nTrim5 = 10, nTrim3 = 10)*.
 
+```{r}
+
+# ------------------------------------------------------------
+#  Align full read length; Phred 33 (from fastQC report)
+# ------------------------------------------------------------
+alignFull.stat <- align(index = "sacCer3-Rsub",
+                        readfile1="G1_R1-sub.fastq.gz",
+                        output_file="G1_R1-sub.bam", 
+                        type = "rna",
+                        phredOffset = 33, 
+                        nthreads = 4)
+
+# ------------------------------------------------------------
+# Align with options to trim 10 nt from both ends of the reads
+# ------------------------------------------------------------
+alignTrim.stat <- align(index = "sacCer3-Rsub",
+                        readfile1="G1_R1-sub.fastq.gz",
+                        output_file="G1_R1-sub_trim10.bam", 
+                        type = "rna",
+                        phredOffset = 33, 
+                        nthreads = 4,
+                        nTrim5 = 10, 
+                        nTrim3 = 10)
+
+# ------------------------------------------------------------
+# Summary alignment stats
+# ------------------------------------------------------------
+align_stats <- merge(alignFull.stat, 
+                    alignTrim.stat, 
+                    by = 'row.names', all = TRUE) 
+colnames(align_stats) <- c("Alignment Stats", "Default", "Trimmed")
+align_stats["Difference"] <- align_stats["Trimmed"] - align_stats["Default"]
+formattable(align_stats)
+
+```
+
 ## Question 1: For both runs (with and without trimming), what fraction of the reads aligns uniquely and multiple times?
 
+From untrimmed alignment, 2,408,263 from total reads of 2,667,280 (90.3%) were mapped to the reference. 80.1% (1929371/2408263) of mapped reads were uniquely mapped while 19.9 % (478892/2408263) mapped to multiple locations.
+
+Trimming 10 nucleotides from both sides of each read improved the number of mapped reads to 2,483,097 (93.1%). The proportion of unique mapped reads is however decreased to 79.4% (1972065/2483097), inevitably increases multiple mapped reads to 20.6% (511032/2483097).
 
 ## Question 2: Are the reads that align the same in both cases?
 
@@ -64,32 +107,85 @@ Check the agreement of the alignments. Load the uniquely aligning reads. Use the
 Use the parameter settings to read also the read id, and the number of hits (NH)
 
 Hint:
-```{r, eval=FALSE}
+```{r}
+
+# ------------------------------------------------------------
+# Define BAM tags (NH = Number of hits) in BAM files
+# ------------------------------------------------------------
 sbp <- ScanBamParam(what = c("qname"), tag="NH")
-alignFull <- readGAlignments(..., param=sbp)
-alignTrimmed <- readGAlignments(..., param=sbp)
+
+# ------------------------------------------------------------
+# Scan BAM alignment files with defined search parameters
+# ------------------------------------------------------------
+alignFull <- readGAlignments('G1_R1-sub.bam', param=sbp)
+alignTrim <- readGAlignments('G1_R1-sub_trim10.bam', param=sbp)
+
+# ------------------------------------------------------------
+# Find common read ID mapped to the reference
+# Note: mcols(alignFull) has two columns; qname and NH
+# ------------------------------------------------------------
+mapped_ids = intersect(mcols(alignFull)$qname, 
+                       mcols(alignTrim)$qname)
+print(paste0("Common mapped reads: ", length(mapped_ids)))
 
 ```
 
+Alternatively, flag `scanBamFlag(isUnmappedQuery = FALSE)` can be used.
 
+```{r}
+
+# ------------------------------------------------------------
+# Extract only mapped read IDs
+# ------------------------------------------------------------
+sbp_mapped <- ScanBamParam(
+  flag = scanBamFlag(isUnmappedQuery = FALSE), what = "qname")
+
+# ------------------------------------------------------------
+# Look up for unmapped reads
+# ------------------------------------------------------------
+alignFull_m <- scanBam('G1_R1-sub.bam', param = sbp_mapped)
+alignTrim_m <- scanBam('G1_R1-sub_trim10.bam', param = sbp_mapped)
+
+# ------------------------------------------------------------
+mapped_ids2 <- intersect(unique(alignTrim_m[[1]]$qname), 
+                          unique(alignFull_m[[1]]$qname))
+
+print(paste0("Common mapped reads: ", length(mapped_ids2)))
+
+```
 
 ## Question 3: For those reads that align full and trimmed, do they align to the same location?
 
 Hint:
 
-```{r, eval=FALSE}
+```{r }
 
-## aligning to the same location?
-common = intersect(mcols(alignFull)$qname, mcols(alignTrimmed)$qname)
+# ------------------------------------------------------------
+# Include only common mapped ids for comparisons
+# ------------------------------------------------------------
+alignFull_mc <- alignFull[match(mapped_ids, mcols(alignFull)$qname)]
+alignTrim_mc <- alignTrim[match(mapped_ids, mcols(alignTrim)$qname)]
 
-alignFull <- alignFull[match(common, mcols(alignFull)$qname)]
-alignTrimmed <- alignTrimmed[match(common, mcols(alignTrimmed)$qname)]
+# ------------------------------------------------------------
+# Finding overlaps of two matching sets element-by-element 
+# ------------------------------------------------------------
+ovlStatus <- poverlaps(granges(alignTrim_mc), 
+                       granges(alignFull_mc), 
+                       type="within") %>% as.vector()
 
-ovlStatus <- poverlaps(granges(alignTrimmed), granges(alignFull), type="within") %>% as.vector()
-mean(ovlStatus)
+print(paste0("Common mapped reads that align at the same position: ", length(ovlStatus), " (", round(mean(ovlStatus)*100, digits = 2), "%)"))
 
+```
+Most of commonly mapped reads between full and trimmed reads aligned at the same locations.
+
+## `sessionInfo()`
+
+```{r}
+sessionInfo()
 ```
 
 
+## AI declaration
 
+No AI agents/tools used for creating code or report.
 
