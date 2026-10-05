@@ -25,8 +25,8 @@ tba
 | 28.09.2026  | Hubert | mapping  | Rsubread | | |
 | 05.10.2026  | Mark  | limma + friends | linear model simulation + design matrices | | |
 | 12.10.2026  | Hubert | RNA-seq quantification | RSEM  | | | 
-| 19.10.2026  | Mark | hands-on session #1: benchmarking | group exercise: Omnibenchmark | X | X |
-| 26.10.2026  | Mark | edgeR+friends 1 | basic edgeR/voom | X | X |
+| 19.10.2026  | Mark | hands-on session #1: benchmarking | group exercise: Omnibenchmark | [ROTS: reproducible RNA-seq biomarker detector––prognostic markers for clear cell renal cell cancer](https://doi.org/10.1093/nar/gkv806) (SS,FO) | X |
+| 26.10.2026  | Mark | edgeR+friends 1 | basic edgeR/voom | [scMultiMap: Cell-type-specific mapping of enhancers and target genes from single-cell multimodal data](https://pubmed.ncbi.nlm.nih.gov/40287418/) (MS, TP) | X |
 | 02.11.2026  | Mark | edgeR+friends 2 | advanced edgeR/voom | X | X |
 | 09.11.2026  | Mark | hands-on session #2: RNA-seq |  FASTQC/Salmon/etc. | X | X |
 | 16.11.2026  | Hubert | single-cell 1: preprocessing, dim. red., clustering | clustering | X | X |
